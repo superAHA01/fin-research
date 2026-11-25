@@ -17,25 +17,37 @@ tier = "closed"
 family = "gemini-3"
 
 # 免费、免卡。注册 https://console.groq.com/keys
+# 2026-11 实测：llama-3.3-70b-versatile 已下线，改用下面两个
 [[model]]
-name = "groq-llama-3.3-70b"
+name = "groq-gpt-oss-120b"
 base_url = "https://api.groq.com/openai/v1"
 env_key = "GROQ_KEY"
-model_id = "llama-3.3-70b-versatile"
-vendor = "meta"
+model_id = "openai/gpt-oss-120b"
+vendor = "openai-open"
 tier = "open"
-family = "llama-3.3"
+family = "gpt-oss"
+
+[[model]]
+name = "groq-qwen3.8-27b"
+base_url = "https://api.groq.com/openai/v1"
+env_key = "GROQ_KEY"
+model_id = "qwen/qwen3.8-27b"
+vendor = "alibaba"
+tier = "open"
+family = "qwen3.8"
 
 # 免费、免卡。注册 https://openrouter.ai/keys
 # 注意 :free 后缀，去掉就是付费版
+# 模型 ID 未验证 —— 拿到 key 后先跑 `python probe.py --check`
 [[model]]
-name = "openrouter-llama-3.3-70b"
+name = "openrouter-free"
 base_url = "https://openrouter.ai/api/v1"
 env_key = "OPENROUTER_KEY"
 model_id = "meta-llama/llama-3.3-70b-instruct:free"
 vendor = "meta"
 tier = "open"
 family = "llama-3.3"
+enabled = false
 
 # 本地模型：装了 Ollama 就能用，不需要 key，不需要联网
 # 跑 `ollama pull qwen3:4b` 之后把 env_key 留空即可
