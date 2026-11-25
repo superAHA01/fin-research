@@ -31,7 +31,11 @@ pip install -r requirements.txt
 cp .env.example .env        # 填至少一个 key，全免费、无需信用卡
 python probe.py --check     # 先确认模型 ID 还有效
 python probe.py             # 默认跑 questions/v1.csv，每题 3 次
+python analyze.py           # 统计表：模型 × 类别 × 结论
+python label.py             # 交互式人工标注
 ```
+
+当前进展见 [`STATUS.md`](STATUS.md)。
 
 结果追加写入 `experiments/results.csv`，然后人工填 `label` 列。
 
