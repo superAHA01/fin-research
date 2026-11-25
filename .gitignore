@@ -1,0 +1,24 @@
+# --- 密钥，永远不要提交 ---
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+*.egg-info/
+
+# --- 原始数据（体积大，只留索引和元数据）---
+data/raw/
+*.pdf
+*.zip
+
+# --- 系统 ---
+.DS_Store
+Thumbs.db
+desktop.ini
