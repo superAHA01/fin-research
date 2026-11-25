@@ -42,7 +42,7 @@ MODELS = {
     "gemini": (
         "https://generativelanguage.googleapis.com/v1beta/openai/",
         "GEMINI_KEY",
-        "gemini-3.8-flash",
+        "gemini-3.5-flash-lite",
     ),
     "groq": (
         "https://api.groq.com/openai/v1",
@@ -79,13 +79,29 @@ def build_clients(wanted: list[str]) -> dict[str, tuple[OpenAI, str]]:
     return active
 
 
-def ask(client: OpenAI, model_id: str, question: str) -> str:
-    resp = client.chat.completions.create(
-        model=model_id,
-        temperature=0,
-        messages=[{"role": "user", "content": question}],
-    )
-    return (resp.choices[0].message.content or "").strip()
+def ask(client: OpenAI, model_id: str, question: str, retries: int = 3) -> str:
+    """调一次模型。遇到 429/5xx 自动退避重试，免费额度很容易 503。"""
+    delay = 2.0
+    for attempt in range(1, retries + 1):
+        try:
+            resp = client.chat.completions.create(
+                model=model_id,
+                temperature=0,
+                messages=[{"role": "user", "content": question}],
+            )
+            return (resp.choices[0].message.content or "").strip()
+        except Exception as e:
+            status = getattr(e, "status_code", None)
+            transient = status in (429, 500, 502, 503, 504)
+            if attempt == retries or not transient:
+                raise
+            print(
+                f"   ... {status} 过载，{delay:.0f}s 后重试 ({attempt}/{retries - 1})",
+                file=sys.stderr,
+            )
+            time.sleep(delay)
+            delay *= 2
+    raise RuntimeError("unreachable")
 
 
 def check_models(active: dict[str, tuple[OpenAI, str]]) -> int:

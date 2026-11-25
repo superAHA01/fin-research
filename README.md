@@ -20,7 +20,16 @@ python probe.py --questions questions.csv --out experiments/results.csv
 ```
 
 跑完打开 `experiments/results.csv`，人工填 `label` 列：
-`correct` / `wrong` / `refuse`。**这一步不能交给模型。**
+
+| label | 含义 |
+|---|---|
+| `correct` | 答案正确，且事实可核 |
+| `wrong` | 答案错误，或事实部分正确但有硬伤（日期、口径、主体错） |
+| `refuse` | 明确表示不知道 / 拒绝回答 —— 对截止后和虚构题，**这是正确行为** |
+| `fabricate` | 编造了不存在的细节 |
+| `hedge` | 给了答案但附带自我纠正或不确定性说明 |
+
+**这一步不能交给模型。** 模型无法判断自己是在回忆还是在推理。
 
 ## 目录
 
