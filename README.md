@@ -22,6 +22,8 @@ A 线练能力，B 线立身份。见 `BRIEF.md` 了解边界与当前阶段。
 
 新增题目要开新文件（`v2.csv`），**不要改 `v1.csv`**。要修正 v1 的错题，就在 v2 里改，并在 v2 里注明替代关系。
 
+出题规则见 [`questions/PROTOCOL.md`](questions/PROTOCOL.md)，已发现缺陷见 [`questions/v1_ERRATA.md`](questions/v1_ERRATA.md)。
+
 ## 快速开始
 
 ```bash
