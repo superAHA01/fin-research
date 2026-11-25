@@ -28,13 +28,21 @@ from pathlib import Path
 from dotenv import load_dotenv
 from openai import OpenAI
 
+# Windows 控制台默认不是 UTF-8，中文会变乱码
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 # name: (base_url, env_key, model_id)
-# 模型名以各家当前免费列表为准，过时了只改这里
+# 模型名会过时。报 "model not found" 时先跑 `python probe.py --check`
+# 看各家当前可用的 ID，然后只改下面这几行。
 MODELS = {
     "gemini": (
         "https://generativelanguage.googleapis.com/v1beta/openai/",
         "GEMINI_KEY",
-        "gemini-2.5-flash",
+        "gemini-3.8-flash",
     ),
     "groq": (
         "https://api.groq.com/openai/v1",
@@ -80,11 +88,28 @@ def ask(client: OpenAI, model_id: str, question: str) -> str:
     return (resp.choices[0].message.content or "").strip()
 
 
+def check_models(active: dict[str, tuple[OpenAI, str]]) -> int:
+    """列出每家当前可用的模型 ID。模型名过时的时候先跑这个。"""
+    for name, (client, _) in active.items():
+        print(f"\n=== {name} ===")
+        try:
+            ids = [m.id for m in client.models.list().data]
+        except Exception as e:
+            print(f"  列不出来（有的厂商不支持 /models）: {type(e).__name__}: {e}")
+            continue
+        for i in sorted(ids)[:40]:
+            print("   ", i)
+        if len(ids) > 40:
+            print(f"    ... 共 {len(ids)} 个")
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--questions", default="questions.csv")
     ap.add_argument("--out", default="experiments/results.csv")
     ap.add_argument("--models", default="", help="逗号分隔；默认全部有 key 的")
+    ap.add_argument("--check", action="store_true", help="只列各家可用模型，不发问题")
     args = ap.parse_args()
 
     load_dotenv()
@@ -93,6 +118,9 @@ def main() -> int:
     if not active:
         print("没有可用的模型，检查 .env", file=sys.stderr)
         return 1
+
+    if args.check:
+        return check_models(active)
 
     questions = load_questions(Path(args.questions))
     if not questions:
