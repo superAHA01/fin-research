@@ -1,0 +1,50 @@
+# 加一个模型 = 加一段 [[model]]，不改代码。
+#
+# env_key 指向 .env 里的变量名；没填该变量就自动跳过这个模型。
+# env_key 留空表示不需要 key（本地服务）。
+# vendor / tier / family 只用于后续分层统计，不影响运行。
+#
+# tier: closed | open | finetune | local
+# 抽样原则：基座优先。记忆主要来自预训练语料，微调继承基座。
+
+[[model]]
+name = "gemini-3.5-flash-lite"
+base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
+env_key = "GEMINI_KEY"
+model_id = "gemini-3.5-flash-lite"
+vendor = "google"
+tier = "closed"
+family = "gemini-3"
+
+# 免费、免卡。注册 https://console.groq.com/keys
+[[model]]
+name = "groq-llama-3.3-70b"
+base_url = "https://api.groq.com/openai/v1"
+env_key = "GROQ_KEY"
+model_id = "llama-3.3-70b-versatile"
+vendor = "meta"
+tier = "open"
+family = "llama-3.3"
+
+# 免费、免卡。注册 https://openrouter.ai/keys
+# 注意 :free 后缀，去掉就是付费版
+[[model]]
+name = "openrouter-llama-3.3-70b"
+base_url = "https://openrouter.ai/api/v1"
+env_key = "OPENROUTER_KEY"
+model_id = "meta-llama/llama-3.3-70b-instruct:free"
+vendor = "meta"
+tier = "open"
+family = "llama-3.3"
+
+# 本地模型：装了 Ollama 就能用，不需要 key，不需要联网
+# 跑 `ollama pull qwen3:4b` 之后把 env_key 留空即可
+[[model]]
+name = "ollama-qwen3-4b"
+base_url = "http://localhost:11434/v1"
+env_key = ""
+model_id = "qwen3:4b"
+vendor = "alibaba"
+tier = "local"
+family = "qwen3"
+enabled = false
