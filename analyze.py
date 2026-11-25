@@ -16,7 +16,6 @@ import csv
 import re
 import sys
 from collections import defaultdict
-from datetime import datetime
 from pathlib import Path
 
 try:
