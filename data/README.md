@@ -30,4 +30,22 @@
 ## 当前状态
 
 `statements.csv` 里 6 行全部是**模拟数据**，用于测试规则引擎。
-真实数据（BCEL 年报、LSX 上市公司）尚未采集。
+
+真实数据已下载 10 份 BCEL 财报，放在 `data/raw/bcel/`（不进版本库，体积大）：
+
+```bash
+python scan_reports.py --dir data/raw/bcel --out data/reports_meta.csv
+```
+
+扫描结果见 `data/reports_meta.csv`：10 份里 5 份有文字层，
+但即使有文字层，三张报表所在页面仍是纯图片。
+
+## 目录
+
+```
+data/
+├── statements.csv        规则引擎的输入（人工录入的结构化数据）
+├── reports_meta.csv      扫描结果：每份 PDF 的页数 / 有字页 / 纯图片页
+└── raw/bcel/             原始 PDF（gitignore，不入库）
+```
+

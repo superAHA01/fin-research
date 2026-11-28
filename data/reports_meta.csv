@@ -1,0 +1,11 @@
+﻿file,size_mb,pages,pages_with_text,image_only_pages,sample_text_chars,sample_lao_chars,text_layer
+bcel_en_annual_2024.pdf,38.2,152,100,51,16293,0,yes
+bcel_en_annual_2025.pdf,37.6,139,84,55,13658,0,yes
+bcel_en_fs_2024.pdf,4.0,64,53,11,7924,0,yes
+bcel_en_half_2026.pdf,6.8,28,0,28,0,0,no
+bcel_en_q1_2026.pdf,6.0,29,0,29,0,0,no
+bcel_en_q3_2026.pdf,18.0,30,0,30,0,0,no
+bcel_la_annual_2025.pdf,36.9,152,90,62,12381,7714,yes
+bcel_la_fs_2024.pdf,4.7,72,60,12,7170,5286,yes
+bcel_la_half_2026.pdf,6.7,32,0,32,0,0,no
+bcel_la_q3_2026.pdf,17.3,35,0,35,0,0,no
